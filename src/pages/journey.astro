@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrgMark from '../components/OrgMark.astro';
+import { journey, education, site } from '../data/site';
+---
+<BaseLayout title="Journey" description="Jahid Hasan's journey: 7+ years from freelance websites to leading AI work at Solspace, California.">
+  <section class="pt-4">
+    <h1 class="text-2xl font-bold tracking-tight">Journey</h1>
+    <p class="mt-2 text-[15px] leading-7 text-zinc-500 dark:text-zinc-400">From freelancing in 2018 to leading AI work for products on 10,000+ websites.</p>
+
+    <ol class="mt-10 space-y-0">
+      {journey.map((j, i) => (
+        <li class="relative flex gap-4 pb-10 last:pb-0">
+          {i < journey.length - 1 && <span class="absolute top-12 left-5 h-[calc(100%-3rem)] w-px bg-zinc-200 dark:bg-zinc-800"></span>}
+          <span class="z-10"><OrgMark org={j.org} /></span>
+          <div class="min-w-0 flex-1 pt-1">
+            <div class="flex flex-wrap items-baseline justify-between gap-2"><h2 class="font-semibold tracking-tight">{j.role}</h2><span class="text-xs text-zinc-400">{j.period}</span></div>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">{j.org} · {j.place}</p>
+            <ul class="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-6 text-zinc-600 dark:text-zinc-400">{j.points.map(pt => <li>{pt}</li>)}</ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <h2 class="mt-14 mb-5 text-base font-semibold">Education</h2>
+    <ul class="divide-y divide-zinc-200 rounded-2xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900/60">
+      {education.map(e => (
+        <li class="flex flex-wrap items-baseline justify-between gap-2 p-4">
+          <div><p class="text-sm font-semibold">{e.org}</p><p class="text-sm text-zinc-500 dark:text-zinc-400">{e.role} · {e.place}</p></div>
+          <span class="text-xs text-zinc-400">{e.period}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      <div class="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/60"><p class="text-sm font-semibold">Languages</p><p class="mt-1 text-sm leading-6 text-zinc-500 dark:text-zinc-400">English, professional level. I work in English every day with my US team and clients.</p></div>
+      <div class="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/60"><p class="text-sm font-semibold">Current role</p><p class="mt-1 text-sm leading-6 text-zinc-500 dark:text-zinc-400">{site.employer} (California, USA), working remotely.</p></div>
+    </div>
+  </section>
+</BaseLayout>

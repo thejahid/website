@@ -1,0 +1,13 @@
+dist/
+.astro/
+node_modules/
+.DS_Store
+.env*
+!.env.example
+.pnpm
+.pnpm-store*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

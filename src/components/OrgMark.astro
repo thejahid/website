@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import solspaceLogo from '../assets/orgs/solspace.png';
+import hungryHippoLogo from '../assets/orgs/hungry-hippo.png';
+import BrandIcon from './BrandIcon.astro';
+
+interface Props { org: string; }
+const { org } = Astro.props;
+const freelancePlatforms = ['Upwork', 'Freelancer', 'Fiverr'];
+---
+{org === 'Solspace' ? (
+  <span class="block size-10 shrink-0 overflow-hidden rounded-xl"><Image src={solspaceLogo} alt="Solspace logo" width={80} height={80} class="size-full object-cover" /></span>
+) : org === 'Hungry Hippo Solutions' ? (
+  <span class="block size-10 shrink-0 overflow-hidden rounded-xl bg-black ring-1 ring-zinc-200 dark:ring-zinc-800"><Image src={hungryHippoLogo} alt="Hungry Hippo Solutions logo" width={80} height={80} class="size-full object-cover" /></span>
+) : org === 'Freelance' ? (
+  <span class="relative grid size-10 shrink-0 place-items-center overflow-hidden rounded-xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-700" role="img" aria-label="Upwork, Freelancer and Fiverr" title="Upwork · Freelancer · Fiverr">
+    {freelancePlatforms.map((name, i) => (
+      <span class="fade-icon absolute" style={`animation-delay: ${i * 3}s`}><BrandIcon name={name} class="size-5" /></span>
+    ))}
+  </span>
+) : (
+  <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-500 text-sm font-bold text-white">{org[0]}</span>
+)}

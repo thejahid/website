@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-system, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+::selection { background: #111; color: #fff; }
+.dark ::selection { background: #fff; color: #111; }
+
+/* Shimmering name (hero) */
+.shimmer-name {
+  --shimmer-angle: 15deg;
+  --_spread: 11%;
+  --_base: #27272a;
+  --_highlight: #a1a1aa;
+  background-image: var(--shimmer-image, linear-gradient(calc(90deg + var(--shimmer-angle)), var(--_base) calc(50% - var(--_spread)), var(--_highlight) calc(50% - var(--_spread) * .5), var(--_highlight) 50%, var(--_highlight) calc(50% + var(--_spread) * .5), var(--_base) calc(50% + var(--_spread))));
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: name-shimmer 5s linear infinite;
+}
+.dark .shimmer-name {
+  --_base: #d4d4d8;
+  --_highlight: #ffffff;
+}
+@keyframes name-shimmer {
+  from { background-position: 150% 0; }
+  to { background-position: -150% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-name { animation: none; }
+}
+
+/* Freelance platform icons: Upwork / Freelancer / Fiverr fade carousel */
+.fade-icon { opacity: 0; animation: icon-fade 9s ease-in-out infinite; }
+@keyframes icon-fade {
+  0% { opacity: 0; transform: scale(.8) }
+  6% { opacity: 1; transform: scale(1) }
+  30% { opacity: 1; transform: scale(1) }
+  36%, 100% { opacity: 0; transform: scale(.8) }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-icon { animation: none; }
+  .fade-icon:first-child { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .6s cubic-bezier(.22,1,.36,1) both; }
+  .rise-1 { animation-delay: .05s } .rise-2 { animation-delay: .12s } .rise-3 { animation-delay: .19s }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+}
+
+.prose-note { @apply text-[15px] leading-7 text-zinc-600 dark:text-zinc-400; }
+.prose-note h2 { @apply mt-10 mb-3 text-lg font-semibold text-zinc-900 dark:text-zinc-50; }
+.prose-note p { @apply my-4; }
+.prose-note strong { @apply font-semibold text-zinc-900 dark:text-zinc-100; }
+.prose-note a { @apply font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-900 dark:text-zinc-50 dark:decoration-zinc-600 dark:hover:decoration-zinc-100; }
+.prose-note ul { @apply my-4 list-disc space-y-2 pl-5; }

@@ -1,0 +1,74 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props { title?: string; description?: string; }
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'Person', name: site.name, url: site.url,
+  image: ogImage.toString(), description: site.description,
+  email: `mailto:${site.email}`, jobTitle: site.role,
+  sameAs: ['https://github.com/thejahid', 'https://www.linkedin.com/in/inthejahid'],
+  worksFor: { '@type': 'Organization', name: 'Solspace' },
+};
+---
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} | ${site.role}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={`${site.name} | ${site.role}`} />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>
+      const t = localStorage.getItem('theme');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+    </script>
+    <ClientRouter />
+  </head>
+  <body class="min-h-screen bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
+    <div class="fixed top-4 right-4 z-50 flex items-center gap-2 sm:top-5 sm:right-6">
+      {Astro.url.pathname !== '/' && (
+        <a href="/" aria-label="Home" title="Home" class="grid size-9 place-items-center rounded-full border border-zinc-200 bg-white/85 text-zinc-500 shadow-sm backdrop-blur transition hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/85 dark:text-zinc-400 dark:hover:text-zinc-50">
+          <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m3 9.5 9-7 9 7V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 22v-8h6v8"/></svg>
+        </a>
+      )}
+      <button type="button" aria-label="Toggle theme" title="Toggle theme" class="theme-toggle grid size-9 place-items-center rounded-full border border-zinc-200 bg-white/85 text-zinc-500 shadow-sm backdrop-blur transition hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/85 dark:text-zinc-400 dark:hover:text-zinc-50">
+        <svg class="size-4 dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+        <svg class="hidden size-4 dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+    <main class="mx-auto w-full max-w-2xl px-5 pt-10 pb-24 sm:px-6 sm:pt-14"><slot /></main>
+    <Footer />
+  </body>
+</html>

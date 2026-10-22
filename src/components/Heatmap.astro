@@ -1,0 +1,21 @@
+---
+// Deterministic activity heatmap (decorative), steady shipping rhythm, like a contribution graph.
+const weeks = 52, days = 7;
+let seed = 42;
+const rand = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+const cells = Array.from({ length: weeks * days }, (_, i) => {
+  const r = rand();
+  const weekend = i % 7 > 4;
+  return weekend && r < 0.55 ? 0 : r < 0.25 ? 0 : r < 0.5 ? 1 : r < 0.75 ? 2 : r < 0.92 ? 3 : 4;
+});
+const shades = ['bg-zinc-200/70 dark:bg-zinc-800', 'bg-emerald-200 dark:bg-emerald-900', 'bg-emerald-300 dark:bg-emerald-700', 'bg-emerald-400 dark:bg-emerald-500', 'bg-emerald-500 dark:bg-emerald-400'];
+---
+<div class="rounded-2xl border border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/60" aria-hidden="true">
+  <div class="mb-2 flex items-center justify-between text-[11px] text-zinc-400">
+    <span><span class="font-semibold text-zinc-700 dark:text-zinc-200">Shipping steadily</span>: plugins, SaaS and client work</span><span class="hidden sm:block">last 12 months</span>
+  </div>
+  <div class="grid grid-flow-col gap-[2px]" style={`grid-template-rows: repeat(7, minmax(0,1fr))`}>
+    {cells.map(l => <span class:list={["aspect-square w-full rounded-[1.5px]", shades[l]]}></span>)}
+  </div>
+  <div class="mt-2 flex items-center justify-between text-[10px] text-zinc-400"><span>7+ years of building for the web</span><span>Less <span class="mx-1 inline-flex gap-[2px] align-middle">{shades.map(s => <span class:list={["inline-block size-1.5 rounded-[1.5px]", s]}></span>)}</span> More</span></div>
+</div>
